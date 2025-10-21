@@ -1,6 +1,7 @@
+// filepath: c:\Users\engel\WebstormProjects\ISIHDDSG\src\content\contentScript.ts
 (function(){
-    if (window.__chatgpt_extractor_installed) return;
-    window.__chatgpt_extractor_installed = true;
+    if ((window as any).__chatgpt_extractor_installed) return;
+    (window as any).__chatgpt_extractor_installed = true;
 
     const btn = document.createElement('button');
     btn.innerText = 'Export Chat';
@@ -11,16 +12,34 @@
     });
     document.body.appendChild(btn);
 
-    const textOf = (el) => el ? el.innerText.trim() : '';
-    const htmlOf = (el) => el ? el.innerHTML.trim() : '';
+    interface Turn {
+        id: string | null;
+        role: string;
+        model: string;
+        text: string;
+        html: string;
+        date: string;
+    }
 
-    function extract() {
+    interface Payload {
+        meta: {
+            title: string;
+            url: string;
+            timestamp: string;
+        };
+        turns: Turn[];
+    }
+
+    const textOf = (el: Element | null): string => el ? (el as HTMLElement).innerText.trim() : '';
+    const htmlOf = (el: Element | null): string => el ? (el as HTMLElement).innerHTML.trim() : '';
+
+    function extract(): Turn[] | { error: string } {
         const turns = Array.from(document.querySelectorAll(
             'article[data-turn-id], [data-testid^="conversation-turn-"], article[data-testid^="conversation-turn-"]'
         ));
         if (!turns.length) return {error: 'No chat turns found'};
 
-        return turns.map(t => {
+        return turns.map((t: Element): Turn => {
             const turnId = t.getAttribute('data-turn-id') || t.getAttribute('data-message-id') || null;
             const author = (t.querySelector('[data-message-author-role]')||t).getAttribute('data-message-author-role') ||
                 (t.getAttribute('data-turn')?.includes('assistant') ? 'assistant' : 'user');
@@ -43,18 +62,18 @@
 
     btn.addEventListener('click', ()=>{
         const extracted = extract();
-        if (extracted && extracted.error){
+        if (extracted && 'error' in extracted){
             alert('Keine Chat-Elemente gefunden.');
             return;
         }
 
-        const payload = {
+        const payload: Payload = {
             meta: {
                 title: document.title,
                 url: location.href,
                 timestamp: new Date().toISOString()
             },
-            turns: extracted
+            turns: extracted as Turn[]
         };
 
         const originalText = btn.innerText;
@@ -64,7 +83,7 @@
         chrome.runtime.sendMessage({
             type: 'chat_export_payload',
             payload
-        }, (response) => {
+        }, (response: { success: boolean; error?: string }) => {
             btn.disabled = false;
             btn.innerText = originalText;
 
@@ -74,12 +93,14 @@
                 return;
             }
 
-            if (!response || response.success !== true) {
+            if (!response || !response.success) {
                 console.error('Export konnte nicht verarbeitet werden:', response);
                 alert('Export konnte nicht verarbeitet werden.');
             }
         });
     });
 
-    window.addEventListener('keydown', e=>{ if (e.altKey && e.key.toLowerCase()==='e') btn.click(); });
+    window.addEventListener('keydown', (e: KeyboardEvent)=>{
+        if (e.altKey && e.key.toLowerCase()==='e') btn.click();
+    });
 })();

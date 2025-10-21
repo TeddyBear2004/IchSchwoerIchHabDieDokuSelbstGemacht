@@ -66,7 +66,7 @@ export default defineConfig({
         rollupOptions: {
             input: {
                 main: resolve(__dirname, "index.html"),
-                background: resolve(__dirname, "public/background.js"),
+                background: resolve(__dirname, "public/background.ts"),
                 contentScript: resolve(__dirname, "src/content/contentScript.js")
             }
         }
