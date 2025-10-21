@@ -1,5 +1,3 @@
-import * as PDFLib from 'pdf-lib';
-import fontkit from '@pdf-lib/fontkit';
 import { TableConfig } from './tableConfig.js';
 
 // PDF Generator f�r Chat Export
@@ -8,7 +6,6 @@ import { TableConfig } from './tableConfig.js';
 
 class ChatPDFGenerator {
     constructor() {
-        this.PDFLib = PDFLib;
         this.config = TableConfig;
     }
 
@@ -287,24 +284,27 @@ class ChatPDFGenerator {
             throw new Error('Keine Daten zum Exportieren vorhanden');
         }
 
+        const PDFLib = (await import('pdf-lib')).default;
+        const { default: fontkitLib } = await import('@pdf-lib/fontkit');
+
+        this.PDFLib = PDFLib;
+
         // Lade die basePdf.pdf als Basis
         const basePdfBytes = await this.loadBasePdfFile();
         let pdfDoc;
 
         if (basePdfBytes) {
             // Lade die Basis-PDF
-            pdfDoc = await this.PDFLib.PDFDocument.load(basePdfBytes);
+            pdfDoc = await PDFLib.PDFDocument.load(basePdfBytes);
         } else {
             // Fallback: Erstelle neues PDF wenn Basis-PDF nicht geladen werden kann
             console.warn('basePdf.pdf konnte nicht geladen werden, erstelle neues PDF');
-            pdfDoc = await this.PDFLib.PDFDocument.create();
+            pdfDoc = await PDFLib.PDFDocument.create();
             pdfDoc.addPage([841.92, 595.32]); // A4 Querformat
         }
 
         // Registriere fontkit für benutzerdefinierte Schriftarten
-        if (typeof fontkit !== 'undefined') {
-            pdfDoc.registerFontkit(fontkit);
-        }
+        pdfDoc.registerFontkit(fontkitLib);
 
         // Lade SpaceMono-Regular Schriftart
         const fontBytes = await this.loadCustomFont();
@@ -316,7 +316,7 @@ class ChatPDFGenerator {
         } else {
             // Fallback auf Standard-Schriftart
             console.warn('SpaceMono-Regular konnte nicht geladen werden, verwende Standard-Schriftart');
-            font = await pdfDoc.embedFont(this.PDFLib.StandardFonts.Helvetica);
+            font = await pdfDoc.embedFont(PDFLib.StandardFonts.Helvetica);
         }
 
         // Fülle die Tabelle mit PDF-Daten
