@@ -15,5 +15,8 @@
       "js": ["__CONTENT_SCRIPT__"],
       "run_at": "document_idle"
     }
+  ],
+  "web_accessible_resources": [
+    "__WEB_ACCESSIBLE_RESOURCES__"
   ]
 }
