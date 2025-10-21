@@ -1,5 +1,6 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import tailwindcss from "@tailwindcss/vite";
 import { resolve, join, relative } from "path";
 import fs from "fs";
 
@@ -52,7 +53,12 @@ function getAllFiles(dir, exclude = []) {
 }
 
 export default defineConfig({
-    plugins: [react(), replaceManifest()],
+    plugins: [react(), tailwindcss(), replaceManifest()],
+    resolve: {
+        alias: {
+            '@': resolve(__dirname, './src')
+        }
+    },
     root: ".", // wichtig – Projektroot
     build: {
         outDir: "dist",

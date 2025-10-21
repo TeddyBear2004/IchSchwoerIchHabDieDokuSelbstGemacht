@@ -1,0 +1,24 @@
+{
+  "apiKey": "",
+  "apiEndpoint": "https://api.groq.com/openai/v1/chat/completions",
+  "model": "openai/gpt-oss-20b",
+  "temperature": 0.7,
+  "maxTokens": 10000,
+  "prompts": {
+    "begruendung": {
+      "mitStichpunkten": "Basierend auf den folgenden Stichpunkten, formuliere eine klare und prägnante Begründung in Ich-Form, warum diese Frage gestellt wurde (max. 270 Zeichen):\n\nFrage:{frage}\n\nStichpunkte: \"{stichpunkte}\"\n\nGib NUR die Begründung zurück, ohne zusätzliche Erklärungen.",
+      "ohneStichpunkte": "Analysiere die folgende Frage und Antwort und erstelle eine kurze Begründung in Ich-Form, warum diese Frage gestellt wurde (max. 270 Zeichen):\n\nFrage: \"{frage}\"\nAntwort: \"{antwort}\"\n\nGib NUR die Begründung zurück, ohne zusätzliche Erklärungen.",
+      "systemPrompt": "Du bist ein hilfreicher Assistent, der prägnante Begründungen formuliert. Antworte immer kurz und präzise und ausformuliert."
+    },
+    "bewertung": {
+      "mitStichpunkten": "Bewerte die folgende Antwort auf eine Frage. Der Benutzer hat folgende Stichpunkte zu seiner Meinung gegeben. Formuliere daraus eine ausformulierte Bewertung (max. 270 Zeichen):\n\nFrage: \"{frage}\"\nAntwort: \"{antwort}\"\nMeinung des Benutzers (Stichpunkte): \"{stichpunkte}\"\n\nGib NUR die ausformulierte Bewertung zurück, ohne zusätzliche Erklärungen.",
+      "ohneStichpunkte": "Bewerte die folgende Antwort auf eine Frage objektiv und erstelle eine ausformulierte Bewertung (max. 270 Zeichen):\n\nFrage: \"{frage}\"\nAntwort: \"{antwort}\"\n\nGib NUR die Bewertung zurück, ohne zusätzliche Erklärungen.",
+      "systemPrompt": "Du bist ein hilfreicher Assistent, der Bewertungen für Antworten formuliert. Antworte immer kurz, präzise und ausformuliert."
+    },
+    "evaluation": {
+      "userPrompt": "Analysiere die folgende {turnRole} und gib eine kurze, ausformulierte Bewertung ab (max. 270 Zeichen).\n\nText: \"{turnText}\"\n\nGib NUR die Bewertung als einen vollständigen Satz zurück, ohne zusätzliche Erklärungen.",
+      "systemPrompt": "Du bist ein hilfreicher Assistent, der Chat-Nachrichten analysiert und bewertet. Antworte immer kurz, präzise und ausformuliert."
+    }
+  }
+}
+
