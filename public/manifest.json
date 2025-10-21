@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "IchSchwoerIchHabDieDokuSelbstGemacht",
+  "version": "1.0",
+  "description": "Inoffizielles Erweiterungstool zum Exportieren von ChatGPT-Unterhaltungen als PDF-Dateien mit Nordakademie-Vorlagen.",
+  "permissions": ["storage", "tabs"],
+  "host_permissions": ["https://chatgpt.com/*", "https://chat.openai.com/*"],
+  "action": { "default_title": "IchSchwoerIchHabDieDokuSelbstGemacht" },
+  "background": {
+    "service_worker": "__BACKGROUND_SCRIPT__"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://chatgpt.com/*", "https://chat.openai.com/*"],
+      "js": ["__CONTENT_SCRIPT__"],
+      "run_at": "document_idle"
+    }
+  ]
+}
