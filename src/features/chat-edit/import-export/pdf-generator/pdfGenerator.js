@@ -284,7 +284,7 @@ class ChatPDFGenerator {
             throw new Error('Keine Daten zum Exportieren vorhanden');
         }
 
-        const PDFLib = (await import('pdf-lib')).default;
+        const PDFLib = await import('pdf-lib');
         const { default: fontkitLib } = await import('@pdf-lib/fontkit');
 
         this.PDFLib = PDFLib;
