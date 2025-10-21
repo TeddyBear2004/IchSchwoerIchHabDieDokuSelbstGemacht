@@ -4,7 +4,6 @@ import {ChatControlPanel} from "./ChatControlPanel"
 import {ChatPairCard} from "./chat-pair/ChatPairCard.tsx"
 import {ChatHeader} from "./ChatHeader"
 import {ApplyToOthersDialog} from "./chat-pair/ApplyToOthersDialog.tsx"
-import {handleExport} from "@/features/chat-edit/import-export/handleExport.ts";
 
 interface ChatEditProps {
     initialChats: Chat[]
@@ -139,7 +138,8 @@ export default function ChatEdit({ initialChats, chats, setChats }: ChatEditProp
         )
     }
 
-    const handleExportWithFilteredPairs = () => {
+    const handleExportWithFilteredPairs = async () => {
+        const { handleExport } = await import("@/features/chat-edit/import-export/handleExport.ts");
         const selectedPairs = allChatPairs.filter((pair) => pair.selected)
         console.log("Exporting:", selectedPairs)
         handleExport(selectedPairs);
