@@ -1,9 +1,11 @@
 import {Header} from "./navigation/Header.tsx";
-import ChatEdit from "./features/chat-edit/ChatEdit.tsx";
-import {useCallback, useEffect, useState} from "react";
+import {useCallback, useEffect, useState, lazy, Suspense} from "react";
 import {convertChatGPTExportToChats} from "@/features/chat-edit/import-export/chatConverter.ts";
 import type {Chat} from "@/features/chat-edit/types.ts";
-import {TutorialPage} from "@/features/tutorial/TutorialPage.tsx";
+
+const ChatEdit = lazy(() => import('./features/chat-edit/ChatEdit.tsx'));
+const TutorialPage = lazy(() => import('@/features/tutorial/TutorialPage.tsx').then(module => ({ default: module.TutorialPage })));
+
 function App() {
     //TODO Mehr anzeigen auch für frage
     const [chats, setChats] = useState<Chat[]>([]);
@@ -107,11 +109,13 @@ function App() {
                 currentView={currentView}
                 onNavigate={setCurrentView}
             />
-            {currentView === 'tutorial' ? (
-                <TutorialPage />
-            ) : (
-                <ChatEdit initialChats={chats} chats={chats} setChats={setChats}/>
-            )}
+            <Suspense fallback={<div>Loading...</div>}>
+                {currentView === 'tutorial' ? (
+                    <TutorialPage />
+                ) : (
+                    <ChatEdit initialChats={chats} chats={chats} setChats={setChats}/>
+                )}
+            </Suspense>
         </>
     )
 }
