@@ -1,7 +1,8 @@
 import type {ChatPair} from "@/features/chat-edit/types.ts";
-import {ChatPDFGenerator} from "@/features/chat-edit/import-export/pdf-generator/pdfGenerator";
 
 export async function handleExport(pairs: ChatPair[]) {
+    const { ChatPDFGenerator } = await import("@/features/chat-edit/import-export/pdf-generator/pdfGenerator");
+
     const pdfData = {
         rows: pairs.map((pair) => {
             console.log(pair);
