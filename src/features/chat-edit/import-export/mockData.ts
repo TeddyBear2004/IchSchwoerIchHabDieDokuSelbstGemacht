@@ -1,5 +1,4 @@
-import type { Chat } from "../types.ts"
-import { convertChatGPTExportToChats, type ChatGPTExportFormat } from "./chatConverter.ts"
+import { type ChatGPTExportFormat } from "./chatConverter.ts"
 
 export const mockChatGPTExport: ChatGPTExportFormat[] = [
   {
@@ -101,9 +100,3 @@ export const mockChatGPTExport: ChatGPTExportFormat[] = [
     ]
   }
 ]
-
-export const mockChats: Chat[] = convertChatGPTExportToChats(mockChatGPTExport)
-
-export function getMockData(): Chat[] {
-  return mockChats
-}

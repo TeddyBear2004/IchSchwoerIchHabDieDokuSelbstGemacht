@@ -1,5 +1,5 @@
 // AI Evaluator für Chat-Nachrichten
-// Nutzt Groq API um Bewertungen für Chat-Turns zu generieren
+// Nutzt API um Bewertungen für Chat-Turns zu generieren
 
 import { loadConfig } from './configLoader';
 import type { AIConfig } from './configLoader';
@@ -45,12 +45,12 @@ class AIEvaluator {
 
     // Validiert ob API-Key konfiguriert ist
     validateApiKey(): void {
-        if (!this.apiKey || this.apiKey === 'YOUR-GROQ-API-KEY-HERE') {
-            throw new Error('Groq API-Key nicht konfiguriert. Bitte API-Key eintragen.');
+        if (!this.apiKey) {
+            throw new Error('API-Key nicht konfiguriert. Bitte API-Key eintragen.');
         }
     }
 
-    // Ruft die Groq API auf
+    // Ruft die API auf
     async callGroqAPI(messages: Message[]): Promise<string> {
         await this.loadConfiguration();
         this.validateApiKey();
@@ -74,7 +74,7 @@ class AIEvaluator {
 
         if (!response.ok) {
             const error = await response.json();
-            throw new Error(`Groq API Fehler: ${error.error?.message || response.statusText}`);
+            throw new Error(`API Fehler: ${error.error?.message || response.statusText}`);
         }
 
         const result = await response.json();
