@@ -3,14 +3,13 @@
  */
 
 import type { AISettings } from './types';
-
 const STORAGE_KEY = 'aiSettings';
 
 // Standard-Einstellungen als Fallback
 const DEFAULT_SETTINGS: AISettings = {
   apiKey: '',
-  apiBaseUrl: 'https://api.groq.com/openai/v1',
-  model: 'mixtral-8x7b-32768',
+  apiBaseUrl: 'https://api.groq.com/openai',
+  model: 'openai/gpt-oss-20b',
   temperature: 0.7,
   maxTokens: 10000,
   prompts: {

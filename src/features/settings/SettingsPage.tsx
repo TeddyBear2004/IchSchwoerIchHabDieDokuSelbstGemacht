@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import type { AISettings } from './types';
+import { API_PRESETS } from './types';
 
 export function SettingsPage() {
   const { settings, updateSettings, isLoading, error } = useSettings();
@@ -62,6 +63,17 @@ export function SettingsPage() {
     setFormData(settings);
   };
 
+  const handleApplyPreset = (presetKey: string) => {
+    const preset = API_PRESETS[presetKey];
+    if (preset) {
+      setFormData((prev) => ({
+        ...prev,
+        apiBaseUrl: preset.apiBaseUrl,
+        model: preset.model,
+      }));
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center p-8">
@@ -91,6 +103,23 @@ export function SettingsPage() {
         {/* API Einstellungen */}
         <Card className="mb-6 p-6">
           <h2 className="text-xl font-semibold text-gray-900 mb-4">API-Einstellungen</h2>
+
+          {/* Presets */}
+          <div className="mb-6 pb-6 border-b">
+            <label className="block text-sm font-medium text-gray-700 mb-3">Voreingestellte Provider</label>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+              {Object.entries(API_PRESETS).map(([key, preset]) => (
+                <Button
+                  key={key}
+                  variant="outline"
+                  onClick={() => handleApplyPreset(key)}
+                  className="text-sm"
+                >
+                  {preset.name}
+                </Button>
+              ))}
+            </div>
+          </div>
 
           <div className="space-y-4">
             <div>
