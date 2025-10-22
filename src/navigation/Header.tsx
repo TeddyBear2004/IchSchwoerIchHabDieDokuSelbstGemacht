@@ -1,9 +1,9 @@
-import { GraduationCap, BookOpen, Edit } from "lucide-react"
+import { GraduationCap, BookOpen, Edit, Settings } from "lucide-react"
 import {title} from "@/assets/Details.ts";
 
 interface HeaderProps {
-    currentView: 'editor' | 'tutorial'
-    onNavigate: (view: 'editor' | 'tutorial') => void
+    currentView: 'editor' | 'tutorial' | 'settings'
+    onNavigate: (view: 'editor' | 'tutorial' | 'settings') => void
 }
 
 export function Header({ currentView, onNavigate }: HeaderProps) {
@@ -37,6 +37,15 @@ export function Header({ currentView, onNavigate }: HeaderProps) {
                         >
                             <BookOpen className="h-4 w-4" />
                             Tutorial
+                        </button>
+                        <button
+                            onClick={() => onNavigate('settings')}
+                            className={`flex items-center gap-2 text-sm font-medium text-primary-foreground hover:opacity-80 transition-opacity ${
+                                currentView === 'settings' ? 'underline underline-offset-4' : ''
+                            }`}
+                        >
+                            <Settings className="h-4 w-4" />
+                            Einstellungen
                         </button>
                     </div>
                 </div>

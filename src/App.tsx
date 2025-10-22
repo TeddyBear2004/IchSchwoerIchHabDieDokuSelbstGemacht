@@ -2,6 +2,7 @@ import {Header} from "./navigation/Header.tsx";
 import {useCallback, useEffect, useState, lazy, Suspense} from "react";
 import {convertChatGPTExportToChats} from "@/features/chat-edit/import-export/chatConverter.ts";
 import type {Chat} from "@/features/chat-edit/types.ts";
+import { SettingsProvider, SettingsPage } from "@/features/settings";
 
 const ChatEdit = lazy(() => import('./features/chat-edit/ChatEdit.tsx'));
 const TutorialPage = lazy(() => import('@/features/tutorial/TutorialPage.tsx').then(module => ({ default: module.TutorialPage })));
@@ -9,7 +10,7 @@ const TutorialPage = lazy(() => import('@/features/tutorial/TutorialPage.tsx').t
 function App() {
     //TODO Mehr anzeigen auch für frage
     const [chats, setChats] = useState<Chat[]>([]);
-    const [currentView, setCurrentView] = useState<'editor' | 'tutorial'>('editor');
+    const [currentView, setCurrentView] = useState<'editor' | 'tutorial' | 'settings'>('editor');
     const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
 
     useEffect(() => {
@@ -104,19 +105,23 @@ function App() {
     }, [loadDataAndRender]);
 
     return (
-        <>
-            <Header
-                currentView={currentView}
-                onNavigate={setCurrentView}
-            />
-            <Suspense fallback={<div>Loading...</div>}>
-                {currentView === 'tutorial' ? (
-                    <TutorialPage />
-                ) : (
-                    <ChatEdit initialChats={chats} chats={chats} setChats={setChats}/>
-                )}
-            </Suspense>
-        </>
+        <SettingsProvider>
+            <>
+                <Header
+                    currentView={currentView}
+                    onNavigate={setCurrentView}
+                />
+                <Suspense fallback={<div>Loading...</div>}>
+                    {currentView === 'tutorial' ? (
+                        <TutorialPage />
+                    ) : currentView === 'settings' ? (
+                        <SettingsPage />
+                    ) : (
+                        <ChatEdit initialChats={chats} chats={chats} setChats={setChats}/>
+                    )}
+                </Suspense>
+            </>
+        </SettingsProvider>
     )
 }
 
