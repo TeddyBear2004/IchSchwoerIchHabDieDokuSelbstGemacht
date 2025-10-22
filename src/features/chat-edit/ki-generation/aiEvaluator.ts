@@ -3,6 +3,7 @@
 
 import { loadConfig } from './configLoader';
 import type { AIConfig } from './configLoader';
+import { COMPLETIONS_ENDPOINT } from '@/features/settings/types';
 
 interface Message {
     role: 'system' | 'user' | 'assistant';
@@ -54,7 +55,10 @@ class AIEvaluator {
         await this.loadConfiguration();
         this.validateApiKey();
 
-        const response = await fetch(this.config!.apiEndpoint, {
+        // Zusammensetzen der vollständigen URL aus baseUrl und der API_ENDPOINT Konstante
+        const fullUrl = `${this.config!.apiBaseUrl}${COMPLETIONS_ENDPOINT}`;
+
+        const response = await fetch(fullUrl, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

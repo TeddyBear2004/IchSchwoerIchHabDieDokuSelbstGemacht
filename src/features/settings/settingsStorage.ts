@@ -9,8 +9,8 @@ const STORAGE_KEY = 'aiSettings';
 // Standard-Einstellungen als Fallback
 const DEFAULT_SETTINGS: AISettings = {
   apiKey: '',
-  apiEndpoint: 'https://api.groq.com/openai/v1/chat/completions',
-  model: 'openai/gpt-oss-20b',
+  apiBaseUrl: 'https://api.groq.com/openai/v1',
+  model: 'mixtral-8x7b-32768',
   temperature: 0.7,
   maxTokens: 10000,
   prompts: {

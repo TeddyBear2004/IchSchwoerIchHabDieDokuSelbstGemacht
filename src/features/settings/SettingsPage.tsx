@@ -105,14 +105,15 @@ export function SettingsPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">API Endpoint</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">API Base URL</label>
               <Input
                 type="text"
-                name="apiEndpoint"
-                value={formData.apiEndpoint}
+                name="apiBaseUrl"
+                value={formData.apiBaseUrl}
                 onChange={handleInputChange}
-                placeholder="https://..."
+                placeholder="z.B. https://api.groq.com"
               />
+              <p className="text-xs text-gray-500 mt-1">Basis-URL des API-Servers</p>
             </div>
 
             <div>

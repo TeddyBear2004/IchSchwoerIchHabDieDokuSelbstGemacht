@@ -2,6 +2,9 @@
  * Settings Feature - Types und Interfaces
  */
 
+// Konstante für den OpenAI-konformen API Endpoint
+export const COMPLETIONS_ENDPOINT = '/chat/completions';
+
 export interface PromptConfig {
   mitStichpunkten: string;
   ohneStichpunkte: string;
@@ -15,7 +18,7 @@ export interface PromptsConfig {
 
 export interface AISettings {
   apiKey: string;
-  apiEndpoint: string;
+  apiBaseUrl: string;
   model: string;
   temperature: number;
   maxTokens: number;
